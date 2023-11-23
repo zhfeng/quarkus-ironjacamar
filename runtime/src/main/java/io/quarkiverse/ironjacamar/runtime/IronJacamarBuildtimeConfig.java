@@ -30,6 +30,16 @@ public interface IronJacamarBuildtimeConfig {
     boolean metricsEnabled();
 
     /**
+     * Where IronJacamar set XATerminator in BootstrapContext.
+     * <p>
+     * This is a global setting and is not specific to a resource adapter.
+     * <p>
+     */
+    @WithName("xa-terminator.enabled")
+    @WithDefault("true")
+    boolean xaTerminatorEnabled();
+
+    /**
      * Resource Adapters
      */
     @ConfigDocMapKey("resource-adapter-name")

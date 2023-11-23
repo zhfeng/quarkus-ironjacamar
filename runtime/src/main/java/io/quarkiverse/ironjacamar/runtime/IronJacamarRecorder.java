@@ -68,7 +68,7 @@ public class IronJacamarRecorder {
         return context -> new QuarkusSecurityIntegration();
     }
 
-    public void initDefaultBootstrapContext(BeanContainer beanContainer) {
+    public void initDefaultBootstrapContext(BeanContainer beanContainer, boolean xaTerminatorEnabled) {
         TransactionIntegration transactionIntegration = beanContainer.beanInstance(TransactionIntegration.class);
         SecurityIntegration securityIntegration = beanContainer.beanInstance(QuarkusSecurityIntegration.class);
         BaseCloneableBootstrapContext bootstrapContext = new BaseCloneableBootstrapContext();
@@ -88,7 +88,9 @@ public class IronJacamarRecorder {
         bootstrapContext.setWorkManager(workManager);
         bootstrapContext.setWorkManagerName(DEFAULT_WORK_MANAGER_NAME);
         bootstrapContext.setTransactionSynchronizationRegistry(transactionIntegration.getTransactionSynchronizationRegistry());
-        bootstrapContext.setXATerminator(transactionIntegration.getXATerminator());
+        if (xaTerminatorEnabled) {
+            bootstrapContext.setXATerminator(transactionIntegration.getXATerminator());
+        }
 
         // Register the default in the coordinator
         WorkManagerCoordinator.getInstance().setDefaultWorkManager(workManager);
